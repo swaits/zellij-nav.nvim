@@ -1,10 +1,10 @@
 # zellij-nav.nvim
 
-This is a Neovim plugin which integrates window navigation with
+This is a Neovim plugin, which integrates window navigation with
 [zellij](https://github.com/zellij-org/zellij).
 
-It creates four new commands which will move between windows inside Neovim
-(like `^w h` et. al.), but once it hits the edge of your editor it will attempt
+It creates four new commands, which will move between windows inside Neovim
+(like `^w h` et al.), but once it hits the edge of your editor it will attempt
 to switch to the next zellij pane.
 
 Commands:
@@ -73,6 +73,33 @@ nnoremap <c-j> <cmd>ZellijNavigateDown<cr>
 nnoremap <c-k> <cmd>ZellijNavigateUp<cr>
 nnoremap <c-l> <cmd>ZellijNavigateRight<cr>
 ```
+
+## Configuring Zellij
+
+This plugin only covers the Neovim side of things. To get to a fully
+seamless workflow, we need zellij to do a few things too.
+
+In an ideal world, we could map `C-hjkl` to work identically across both zellij
+and Neovim, but that's not possible. Unfortunately, today, zellij has a few
+problems, which prevent us from getting to that point.
+
+First, zellij doesn't allow us to bind `C-j` to anything. This is a [known bug](https://github.com/zellij-org/zellij/issues/2679).
+
+Second, and more critically, upon any of the `C-hjkl` keystrokes in zellij, we
+need to be able to:
+
+1. Determine whether the focussed pane is running `nvim`.
+2. If so, forward the keystrokes to the application; for example, using the
+   zellij `Write` action.
+3. If not, act on the keystroke directly in zellij by using the `MoveFocus
+   <direction>` action.
+
+Presently, I have not figured out a way to do this, even through the [zellij plugin system](https://zellij.dev/documentation/plugins).
+
+Thus, my configuration uses `A-hjkl` in zellij. So, I use `C-hjkl` to move
+around within Neovim, and to move from Neovim to another zellij pane. But if
+I'm in a non-`nvim` zellij pane, I just use `A-hjkl` to switch panes. It's not
+ideal, but it's the best I know today.
 
 ## MIT License
 
