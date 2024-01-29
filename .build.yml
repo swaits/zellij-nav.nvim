@@ -5,7 +5,7 @@ sources:
   - git+ssh://git@git.sr.ht/~swaits/zellij-nav.nvim
 tasks:
   - mirror-to-github: |
-      cd ~/zellij-nav
+      cd ~/zellij-nav.nvim
       ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
       git remote add github git@github.com:swaits/zellij-nav.nvim.git
       git push --mirror github
