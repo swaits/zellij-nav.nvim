@@ -1,0 +1,11 @@
+image: alpine/edge
+secrets:
+  - 88cce185-d2ec-4573-9546-e33f36f79bbf
+sources:
+  - git+ssh://git@git.sr.ht/~swaits/zellij-nav
+tasks:
+  - mirror-to-github: |
+      cd ~/zellij-nav
+      ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
+      git remote add github git@github.com:swaits/zellij-nav.git
+      git push --mirror github
