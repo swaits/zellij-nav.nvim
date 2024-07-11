@@ -1,6 +1,12 @@
 local M = {}
 
-local function nav(short_direction, direction)
+local function nav(short_direction, direction, action)
+  action = action or "move-focus"
+
+  if action ~= "move-focus" and action ~= "move-focus-or-tab" then
+    error("invalid action: " .. action)
+  end
+
   -- get window ID, try switching windows, and get ID again to see if it worked
   local cur_winnr = vim.fn.winnr()
   vim.api.nvim_command("wincmd " .. short_direction)
@@ -8,27 +14,27 @@ local function nav(short_direction, direction)
 
   -- if the window ID didn't change, then we didn't switch
   if cur_winnr == new_winnr then
-    vim.fn.system("zellij action move-focus " .. direction)
+    vim.fn.system("zellij action " .. action .. " " .. direction)
     if vim.v.shell_error ~= 0 then
       error("zellij executable not found in path")
     end
   end
 end
 
-function M.up()
-  nav("k", "up")
+function M.up(action)
+  nav("k", "up", action)
 end
 
-function M.down()
-  nav("j", "down")
+function M.down(action)
+  nav("j", "down", action)
 end
 
-function M.right()
-  nav("l", "right")
+function M.right(action)
+  nav("l", "right", action)
 end
 
-function M.left()
-  nav("h", "left")
+function M.left(action)
+  nav("h", "left", action)
 end
 
 -- create our exported setup() function
