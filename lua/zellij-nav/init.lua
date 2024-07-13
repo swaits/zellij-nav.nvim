@@ -1,7 +1,11 @@
 local M = {}
 
 local function nav(short_direction, direction, action)
-  action = action or "move-focus"
+  -- Use "move-focus" if nav is called via user command or
+  -- action is nil.
+  if type(action) == "table" or not action then
+    action = "move-focus"
+  end
 
   if action ~= "move-focus" and action ~= "move-focus-or-tab" then
     error("invalid action: " .. action)
