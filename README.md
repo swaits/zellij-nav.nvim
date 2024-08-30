@@ -13,6 +13,10 @@ Commands:
 - `ZellijNavigateDown`
 - `ZellijNavigateUp`
 - `ZellijNavigateRight`
+- `ZellijNavigateLeftTab`
+- `ZellijNavigateDownTab`
+- `ZellijNavigateUpTab`
+- `ZellijNavigateRightTab`
 
 It also exports the `lua` versions, which you can call like this:
 
@@ -20,6 +24,10 @@ It also exports the `lua` versions, which you can call like this:
 - `require("zellij-nav").down()`
 - `require("zellij-nav").up()`
 - `require("zellij-nav").right()`
+- `require("zellij-nav").left_tab()`
+- `require("zellij-nav").down_tab()`
+- `require("zellij-nav").up_tab()`
+- `require("zellij-nav").right_tab()`
 
 This is written in the spirit of
 [vim-tmux-navigator](https://github.com/alexghergh/nvim-tmux-navigation/), but
@@ -36,10 +44,10 @@ possible.
   lazy = true,
   event = "VeryLazy",
   keys = {
-    { "<c-h>", "<cmd>ZellijNavigateLeft<cr>",  { silent = true, desc = "navigate left"  } },
+    { "<c-h>", "<cmd>ZellijNavigateLeftTab<cr>",  { silent = true, desc = "navigate left or tab"  } },
     { "<c-j>", "<cmd>ZellijNavigateDown<cr>",  { silent = true, desc = "navigate down"  } },
     { "<c-k>", "<cmd>ZellijNavigateUp<cr>",    { silent = true, desc = "navigate up"    } },
-    { "<c-l>", "<cmd>ZellijNavigateRight<cr>", { silent = true, desc = "navigate right" } },
+    { "<c-l>", "<cmd>ZellijNavigateRightTab<cr>", { silent = true, desc = "navigate right or tab" } },
   },
   opts = {},
 }
@@ -54,10 +62,10 @@ possible.
     require("zellij-nav").setup()
 
     local map = vim.keymap.set
-    map("n", "<c-h>", "<cmd>ZellijNavigateLeft<cr>",  { desc = "navigate left"  })
+    map("n", "<c-h>", "<cmd>ZellijNavigateLeftTab<cr>",  { desc = "navigate left or tab"  })
     map("n", "<c-j>", "<cmd>ZellijNavigateDown<cr>",  { desc = "navigate down"  })
     map("n", "<c-k>", "<cmd>ZellijNavigateUp<cr>",    { desc = "navigate up"    })
-    map("n", "<c-l>", "<cmd>ZellijNavigateRight<cr>", { desc = "navigate right" })
+    map("n", "<c-l>", "<cmd>ZellijNavigateRightTab<cr>", { desc = "navigate right or tab" })
 
   end
 }
