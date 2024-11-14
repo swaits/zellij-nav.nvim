@@ -88,28 +88,28 @@ nnoremap <c-l> <cmd>ZellijNavigateRight<cr>
 This plugin only covers the Neovim side of things. To achieve a fully seamless
 workflow, we also need zellij to perform a few tasks.
 
-In an ideal scenario, we would be able to map `C-hjkl` to function identically
-in both zellij and Neovim, but unfortunately, that is not possible. Currently,
-zellij has a few issues that prevent us from reaching that point.
-
-Firstly, zellij does not allow us to bind `C-j` to any function. This is a
+Firstly, for users who like C-hjkl, zellij does not allow us to bind `C-j` to any function. This is a
 [known bug](https://github.com/zellij-org/zellij/issues/2679).
 
-Secondly, and more importantly, when any of the `C-hjkl` keystrokes are used in
-zellij, we need to be able to:
-
-1. Determine if the focused pane is running `nvim`.
-2. If it is, forward the keystrokes to the application, for example, by using
-   the zellij `Write` action.
-3. If it is not, directly perform the keystroke action in zellij by using the
-   `MoveFocus <direction>` action.
-
-Currently, I have not found a way to accomplish this, even through the zellij
-[plugin system](https://zellij.dev/documentation/plugins).
-
-Therefore, my configuration uses `A-hjkl` in zellij. As a result, I use
-`C-hjkl` to navigate within Neovim and to switch from Neovim to another zellij
-pane. However, if I'm in a non-`nvim` pane, I use `A-hjkl` to change focus.
+Secondly, and more importantly, when an instance of neovim is active, change zellij into lock mode using [zellij-autoloc](https://github.com/fresh2dev/zellij-autolock). 
+an example section of the config could be
+```
+...
+          autolock location="https://github.com/fresh2dev/zellij-autolock/releases/latest/download/zellij-autolock.wasm" {
+              triggers "nvim|vim|v|nv"  // Lock when any open these programs open. They are expected to unlock themselves when closed (e.g., using zellij.vim plugin).
+              watch_triggers "fzf|zoxide|atuin|atac"  // Lock when any of these open and monitor until closed.
+              watch_interval "1.0"  // When monitoring, check every X seconds.
+          }
+...
+```
+Finally, to achieve unlocking when neovim is unfocused, you can add the following to your neovim config:
+```lua
+-- NOTE: Ensures that when exiting NeoVim, Zellij returns to normal mode
+vim.api.nvim_create_autocmd("VimLeave", {
+    pattern = "*",
+    command = "silent !zellij action switch-mode normal"
+})
+```
 
 ## MIT License
 
