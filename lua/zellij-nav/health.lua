@@ -1,9 +1,9 @@
 local M = {}
 
 M.check = function()
-  local start = vim.health.report_start or vim.health.start
-  local report_ok = vim.health.report_ok or vim.health.ok
-  local report_error = vim.health.report_error or vim.health.error
+  local start = vim.health.start
+  local report_ok = vim.health.ok
+  local report_error = vim.health.error
 
   start("zellij-nav.nvim")
   local version = vim.fn.system("zellij --version")
