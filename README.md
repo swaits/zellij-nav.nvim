@@ -88,10 +88,7 @@ nnoremap <c-l> <cmd>ZellijNavigateRight<cr>
 This plugin only covers the Neovim side of things. To achieve a fully seamless
 workflow, we also need zellij to perform a few tasks.
 
-Firstly, for users who like C-hjkl, zellij does not allow us to bind `C-j` to any function. This is a
-[known bug](https://github.com/zellij-org/zellij/issues/2679).
-
-Secondly, and more importantly, when an instance of neovim is active, change zellij into lock mode using [zellij-autoloc](https://github.com/fresh2dev/zellij-autolock). 
+When an instance of neovim is active, change zellij into lock mode using [zellij-autoloc](https://github.com/fresh2dev/zellij-autolock). 
 an example section of the config could be
 ```
 ...
@@ -102,7 +99,7 @@ an example section of the config could be
           }
 ...
 ```
-Finally, to achieve unlocking when neovim is unfocused, you can add the following to your neovim config:
+And to achieve unlocking when neovim is unfocused, you can add the following to your neovim config:
 ```lua
 -- NOTE: Ensures that when exiting NeoVim, Zellij returns to normal mode
 vim.api.nvim_create_autocmd("VimLeave", {
