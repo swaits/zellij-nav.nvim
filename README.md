@@ -40,7 +40,7 @@ possible.
 
 ```lua
 {
-  "https://git.sr.ht/~swaits/zellij-nav.nvim",
+  "swaits/zellij-nav.nvim",
   lazy = true,
   event = "VeryLazy",
   keys = {
@@ -57,7 +57,7 @@ possible.
 
 ```lua
 {
-  "https://git.sr.ht/~swaits/zellij-nav.nvim",
+  "https://github.com/swaits/zellij-nav.nvim",
   config = function()
     require("zellij-nav").setup()
 
@@ -74,7 +74,7 @@ possible.
 ### [vim-plug](https://github.com/junegunn/vim-plug)
 
 ```vim
-Plug 'https://git.sr.ht/~swaits/zellij-nav.nvim'
+Plug 'https://github.com/swaits/zellij-nav.nvim'
 lua require("zellij-nav").setup()
 
 nnoremap <c-h> <cmd>ZellijNavigateLeft<cr>
