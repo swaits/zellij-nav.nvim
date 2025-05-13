@@ -83,28 +83,22 @@ nnoremap <c-k> <cmd>ZellijNavigateUp<cr>
 nnoremap <c-l> <cmd>ZellijNavigateRight<cr>
 ```
 
-## Configuring Zellij
+## Avoiding keymaps collision
 
-This plugin only covers the Neovim side of things. To achieve a fully seamless
-workflow, we also need zellij to perform a few tasks.
+Since the purpose of this plugin is to have the same keymaps for pane navigation in Zellij and window navigation in Neovim, we have to make sure Zellij doesn't intercept our keymaps while inside Neovim. This can be achieved by forcing Zellij into locked mode while Neovim is active.
 
-When an instance of neovim is active, change zellij into lock mode using [zellij-autoloc](https://github.com/fresh2dev/zellij-autolock). 
-an example section of the config could be
 ```
-...
-          autolock location="https://github.com/fresh2dev/zellij-autolock/releases/latest/download/zellij-autolock.wasm" {
-              triggers "nvim|vim|v|nv"  // Lock when any open these programs open. They are expected to unlock themselves when closed (e.g., using zellij.vim plugin).
-              watch_triggers "fzf|zoxide|atuin|atac"  // Lock when any of these open and monitor until closed.
-              watch_interval "1.0"  // When monitoring, check every X seconds.
-          }
-...
-```
-And to achieve unlocking when neovim is unfocused, you can add the following to your neovim config:
-```lua
--- NOTE: Ensures that when exiting NeoVim, Zellij returns to normal mode
-vim.api.nvim_create_autocmd("VimLeave", {
-    pattern = "*",
-    command = "silent !zellij action switch-mode normal"
+vim.api.nvim_create_autocmd({ "FocusGained" }, {
+  command = "silent !zellij action switch-mode locked",
+})
+vim.api.nvim_create_autocmd({ "VimEnter" }, {
+  command = "silent !zellij action switch-mode locked",
+})
+vim.api.nvim_create_autocmd({ "FocusLost" }, {
+  command = "silent !zellij action switch-mode normal",
+})
+vim.api.nvim_create_autocmd({ "VimLeave" }, {
+  command = "silent !zellij action switch-mode normal",
 })
 ```
 
