@@ -99,6 +99,19 @@ nnoremap <c-k> <cmd>ZellijNavigateUp<cr>
 nnoremap <c-l> <cmd>ZellijNavigateRight<cr>
 ```
 
+### [Pack](https://neovim.io/doc/user/pack/#vim.pack) 
+***(Note: v0.12+ only)***
+
+```vim
+vim.pack.add { 'https://github.com/swaits/zellij-nav.nvim' }
+require('zellij-nav').setup()
+
+vim.keymap.set('n', '<C-h>', '<cmd>ZellijNavigateLeft<cr>', { desc = 'Move focus left' })
+vim.keymap.set('n', '<C-j>', '<cmd>ZellijNavigateDown<cr>', { desc = 'Move focus down' })
+vim.keymap.set('n', '<C-k>', '<cmd>ZellijNavigateUp<cr>', { desc = 'Move focus up' })
+vim.keymap.set('n', '<C-l>', '<cmd>ZellijNavigateRight<cr>', { desc = 'Move focus right' })
+```
+
 ## Configuring Zellij
 
 This plugin only covers the Neovim side of things. To achieve a fully seamless
