@@ -29,6 +29,16 @@ It also exports the `lua` versions, which you can call like this:
 - `require("zellij-nav").up_tab()`
 - `require("zellij-nav").right_tab()`
 
+If you want to call a function when leaving neovim to another pane or tab in zellij, you can use the on_leave config:
+
+```lua
+require("zellij-nav").setup({
+    config.on_leave = function()
+        -- Your function to call here
+    end,
+})
+```
+
 This is written in the spirit of
 [vim-tmux-navigator](https://github.com/alexghergh/nvim-tmux-navigation/), but
 for zellij instead, while also aiming to be as simple and lightweight as
@@ -49,7 +59,9 @@ possible.
     { "<c-k>", "<cmd>ZellijNavigateUp<cr>",    { silent = true, desc = "navigate up"    } },
     { "<c-l>", "<cmd>ZellijNavigateRightTab<cr>", { silent = true, desc = "navigate right or tab" } },
   },
-  opts = {},
+  opts = {
+        config.on_leave = function() end, -- Function to call when leaving neovim to another pane/tab
+    },
 }
 ```
 
@@ -59,7 +71,9 @@ possible.
 {
   "https://github.com/swaits/zellij-nav.nvim",
   config = function()
-    require("zellij-nav").setup()
+    require("zellij-nav").setup({
+            config.on_leave = function() end, -- Function to call when leaving neovim to another pane/tab
+        })
 
     local map = vim.keymap.set
     map("n", "<c-h>", "<cmd>ZellijNavigateLeftTab<cr>",  { desc = "navigate left or tab"  })
@@ -75,7 +89,9 @@ possible.
 
 ```vim
 Plug 'https://github.com/swaits/zellij-nav.nvim'
-lua require("zellij-nav").setup()
+lua require("zellij-nav").setup({
+            config.on_leave = function() end, -- Function to call when leaving neovim to another pane/tab
+        })
 
 nnoremap <c-h> <cmd>ZellijNavigateLeft<cr>
 nnoremap <c-j> <cmd>ZellijNavigateDown<cr>
@@ -88,8 +104,9 @@ nnoremap <c-l> <cmd>ZellijNavigateRight<cr>
 This plugin only covers the Neovim side of things. To achieve a fully seamless
 workflow, we also need zellij to perform a few tasks.
 
-When an instance of neovim is active, change zellij into lock mode using [zellij-autoloc](https://github.com/fresh2dev/zellij-autolock). 
+When an instance of neovim is active, change zellij into lock mode using [zellij-autoloc](https://github.com/fresh2dev/zellij-autolock).
 an example section of the config could be
+
 ```
 ...
           autolock location="https://github.com/fresh2dev/zellij-autolock/releases/latest/download/zellij-autolock.wasm" {
@@ -99,7 +116,9 @@ an example section of the config could be
           }
 ...
 ```
+
 And to achieve unlocking when neovim is unfocused, you can add the following to your neovim config:
+
 ```lua
 -- NOTE: Ensures that when exiting NeoVim, Zellij returns to normal mode
 vim.api.nvim_create_autocmd("VimLeave", {

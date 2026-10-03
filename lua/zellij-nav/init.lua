@@ -1,5 +1,9 @@
 local M = {}
 
+local config = {
+  on_leave = function() end,
+}
+
 local function nav(short_direction, direction, action)
   -- Use "move-focus" if action is nil.
   if not action then
@@ -17,9 +21,12 @@ local function nav(short_direction, direction, action)
 
   -- if the window ID didn't change, then we didn't switch
   if cur_winnr == new_winnr then
-    vim.fn.system("zellij action " .. action .. " " .. direction)
-    if vim.v.shell_error ~= 0 then
-      error("zellij executable not found in path")
+    if vim.env.ZELLIJ ~= nil then -- if the zellij env does not exit, stop.
+      vim.fn.system("zellij action " .. action .. " " .. direction)
+      config.on_leave()
+      if vim.v.shell_error ~= 0 then
+        error("zellij executable not found in path")
+      end
     end
   end
 end
@@ -58,6 +65,7 @@ end
 
 -- create our exported setup() function
 function M.setup(opts)
+  config = vim.tbl_deep_extend("force", config, opts.config or {})
   -- create our commands
   vim.api.nvim_create_user_command("ZellijNavigateUp", M.up, {})
   vim.api.nvim_create_user_command("ZellijNavigateDown", M.down, {})
